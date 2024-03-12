@@ -1,5 +1,6 @@
 namespace API.Entities
 {
+  //Class and properties be public for EntityFramework to work
 	public class Product
 	{
 		public int Id { get; set; }
