@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react'
+import { Product } from './models/products'
 
 function App() {
-  const [products, setProducts] = useState([
-    { name: 'product 1', price: 100.0 },
-    { name: 'product 2', price: 200.0 },
-  ])
+  const [products, setProducts] = useState<Product[]>([])
 
   useEffect(
     () => {
@@ -22,19 +20,23 @@ function App() {
     setProducts((prevState) => [
       ...prevState,
       {
-        name: 'product ' + (prevState.length + 1),
-        price: 100.0 * (prevState.length + 1),
+        id: prevState.length++,
+        name: 'product ' + prevState.length++,
+        price: 100.0 * prevState.length++,
+        brand: 'Some Brand',
+        description: 'Some Description',
+        pictureUrl: 'http://picsum.photos/200',
       },
     ])
   }
 
   return (
-    <div className="app">
+    <div>
       <h1>ReStore</h1>
       <ul>
-        {products.map((item, index) => (
-          <li key={index}>
-            {item.name} - {item.price}
+        {products.map((product) => (
+          <li key={product.id}>
+            {product.name} - {product.price}
           </li>
         ))}
       </ul>
