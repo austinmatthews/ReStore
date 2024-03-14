@@ -1,48 +1,38 @@
-import { useState, useEffect } from 'react'
-import { Product } from './models/products'
+import {
+  Container,
+  CssBaseline,
+  ThemeProvider,
+  createTheme,
+} from '@mui/material';
+import Header from './Header';
+import Catalog from '../../features/catalog/Catalog';
+import { useState } from 'react';
 
 function App() {
-  const [products, setProducts] = useState<Product[]>([])
-
-  useEffect(
-    () => {
-      fetch('http://localhost:5000/api/products')
-        .then((response) => response.json())
-        .then((data) => setProducts(data))
-    },
-    // This second parameter below (The empty array) is an array on dependencies
-    // An Empty array will make it only run once
-    //If you don't add this, it will rerender infinitely
-    []
-  )
-
-  function addProduct() {
-    setProducts((prevState) => [
-      ...prevState,
-      {
-        id: prevState.length++,
-        name: 'product ' + prevState.length++,
-        price: 100.0 * prevState.length++,
-        brand: 'Some Brand',
-        description: 'Some Description',
-        pictureUrl: 'http://picsum.photos/200',
+  const [darkMode, setDarkMode] = useState(false);
+  const palette = darkMode ? 'dark' : 'light';
+  const theme = createTheme({
+    palette: {
+      mode: palette,
+      background: {
+        default: palette === 'light' ? '#eaeaea' : '#121212',
       },
-    ])
+    },
+  });
+
+  function onSwitch() {
+    setDarkMode(!darkMode);
   }
 
   return (
-    <div>
-      <h1>ReStore</h1>
-      <ul>
-        {products.map((product) => (
-          <li key={product.id}>
-            {product.name} - {product.price}
-          </li>
-        ))}
-      </ul>
-      <button onClick={addProduct}>Add Product</button>
-    </div>
-  )
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Header onSwitch={onSwitch} darkMode={darkMode} />
+      <Container>
+        <Catalog />
+      </Container>
+    </ThemeProvider>
+  );
 }
 
-export default App
+export default App;
