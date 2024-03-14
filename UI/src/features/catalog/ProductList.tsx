@@ -1,9 +1,9 @@
-import { Grid } from '@mui/material';
-import { Product } from '../../app/layout/models/products';
-import ProductCard from './ProductCard';
+import { Grid } from '@mui/material'
+import { Product } from '../../app/layout/models/products'
+import ProductCard from './ProductCard'
 
 interface Props {
-  products: Product[];
+  products: Product[]
 }
 
 export default function ProductList({ products }: Props) {
@@ -17,5 +17,5 @@ export default function ProductList({ products }: Props) {
         ))}
       </Grid>
     </>
-  );
+  )
 }

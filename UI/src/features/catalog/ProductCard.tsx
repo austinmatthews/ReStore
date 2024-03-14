@@ -7,11 +7,12 @@ import {
   CardHeader,
   CardMedia,
   Typography,
-} from '@mui/material';
-import { Product } from '../../app/layout/models/products';
+} from '@mui/material'
+import { Product } from '../../app/layout/models/products'
+import { Link } from 'react-router-dom'
 
 interface Props {
-  product: Product;
+  product: Product
 }
 
 export default function ProductCard({ product }: Props) {
@@ -45,11 +46,13 @@ export default function ProductCard({ product }: Props) {
         </CardContent>
         <CardActions>
           <Button size="small">Add To Cart</Button>
-          <Button size="small">View</Button>
+          <Button component={Link} to={`/catalog/${product.id}`} size="small">
+            View
+          </Button>
         </CardActions>
       </Card>
     </>
-  );
+  )
 }
 
 /* <ListItem key={product.id}>
