@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 import { Product } from '../../app/layout/models/products'
 import agent from '../../app/api/agent'
+import LoadingComponent from '../../app/layout/LoadingComponent'
 
 export default function ProductDetails() {
   const { id } = useParams<{ id: string }>()
@@ -27,7 +28,7 @@ export default function ProductDetails() {
   }, [id])
 
   if (loading) {
-    return <h3>Loading...</h3>
+    return <LoadingComponent message="Loading Product..." />
   }
 
   if (!product) {
