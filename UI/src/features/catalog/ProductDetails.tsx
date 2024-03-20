@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
 import { Product } from '../../app/layout/models/products'
 import agent from '../../app/api/agent'
 
@@ -31,7 +31,7 @@ export default function ProductDetails() {
   }
 
   if (!product) {
-    return <h3>Product not found</h3>
+    return <Navigate replace to="/not-found" />
   }
 
   return (

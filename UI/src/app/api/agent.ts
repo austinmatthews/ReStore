@@ -1,4 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from 'axios'
+import { toast } from 'react-toastify'
+import { router } from '../router/routes'
 
 axios.defaults.baseURL = 'http://localhost:5000/api/'
 
@@ -9,7 +11,27 @@ axios.interceptors.response.use(
     return response
   },
   (error: AxiosError) => {
-    console.log('Caught by interceptor')
+    const { data, status } = error.response as AxiosResponse
+    switch (status) {
+      case 400:
+        if (data.errors) {
+          const modelStateErrors: string[] = []
+          for (const key in data.errors) {
+            modelStateErrors.push(data.errors[key])
+          }
+          throw modelStateErrors.flat()
+        }
+        toast.error(data.title)
+        break
+      case 401:
+        toast.error(data.title)
+        break
+      case 500:
+        router.navigate('/server-error', { state: { error: data } })
+        break
+      default:
+        break
+    }
     return Promise.reject(error.response)
   }
 )
