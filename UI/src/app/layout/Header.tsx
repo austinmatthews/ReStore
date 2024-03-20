@@ -52,7 +52,13 @@ export default function Header({ darkMode, onSwitch }: Props) {
             <Switch checked={darkMode} onChange={onSwitch} />
           </Box>
 
-          <List sx={{ display: 'flex', flexGrow: '1', flexBasis: '0' }}>
+          <List
+            sx={{
+              display: 'flex',
+              flexBasis: '0',
+              justifyContent: 'center',
+            }}
+          >
             {midLinks.map(({ title, path }) => (
               <ListItem component={NavLink} to={path} key={path} sx={navStyles}>
                 {title.toUpperCase()}
