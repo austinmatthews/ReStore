@@ -13,7 +13,7 @@ builder.Services.AddSwaggerGen();
 //Adding the DB context and grabbing DefaultConnection string which is set in appSettings
 builder.Services.AddDbContext<StoreContext>(opt =>
 {
-  opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
+	opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 builder.Services.AddCors();
@@ -24,13 +24,13 @@ app.UseMiddleware<ExceptionMiddleware>();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-  app.UseSwagger();
-  app.UseSwaggerUI();
+	app.UseSwagger();
+	app.UseSwaggerUI();
 }
 
 app.UseCors(opt =>
 {
-  opt.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
+	opt.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:3000");
 });
 
 app.UseAuthorization();
@@ -47,14 +47,14 @@ var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
 //Try catch because it might fail
 try
 {
-  //Applies pending migrations and creates db if it does not exist yet
-  context.Database.Migrate();
-  //Static call to Initialize to pass in context and add data to db
-  DbInitializer.Initialize(context);
+	//Applies pending migrations and creates db if it does not exist yet
+	context.Database.Migrate();
+	//Static call to Initialize to pass in context and add data to db
+	DbInitializer.Initialize(context);
 }
 catch (Exception ex)
 {
-  logger.LogError(ex, "A problem occured during migration");
+	logger.LogError(ex, "A problem occured during migration");
 }
 
 app.Run();
