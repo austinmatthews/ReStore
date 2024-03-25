@@ -18,7 +18,7 @@ export default function Catalog() {
     // This second parameter below (The empty array) is an array on dependencies
     // An Empty array will make it only run once
     //If you don't add this, it will rerender infinitely
-    []
+    [],
   )
 
   if (loading) return <LoadingComponent message="Loading Products..." />

@@ -8,7 +8,7 @@ interface StoreContextValue {
 }
 
 export const StoreContext = createContext<StoreContextValue | undefined>(
-  undefined
+  undefined,
 )
 
 export function useStoreContext() {

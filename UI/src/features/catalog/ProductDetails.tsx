@@ -49,7 +49,7 @@ export default function ProductDetails() {
         <Typography variant="h3">{product.name}</Typography>
         <Divider sx={{ mb: 2 }} />
         <Typography variant="h4" color="secondary">
-          ${currencyFormat(product.price)}
+          {currencyFormat(product.price)}
         </Typography>
         <TableContainer>
           <Table>
@@ -68,7 +68,7 @@ export default function ProductDetails() {
               </TableRow>
               <TableRow>
                 <TableCell>Quantity In Stock</TableCell>
-                <TableCell>{product.quantityInStock}</TableCell>
+                <TableCell>{product.quantity}</TableCell>
               </TableRow>
             </TableBody>
           </Table>

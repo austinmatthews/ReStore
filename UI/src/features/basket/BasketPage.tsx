@@ -36,7 +36,7 @@ export default function BasketPage() {
   function handleRemoveItem(
     productId: number,
     name: string,
-    quantity: number = 1
+    quantity: number = 1,
   ) {
     setStatus({ loading: true, name: name })
     agent.Basket.deleteBasketItem(productId, quantity)
@@ -89,7 +89,7 @@ export default function BasketPage() {
                     onClick={() =>
                       handleRemoveItem(
                         item.productId,
-                        `subtract${item.productId}`
+                        `subtract${item.productId}`,
                       )
                     }
                   >
@@ -121,7 +121,7 @@ export default function BasketPage() {
                       handleRemoveItem(
                         item.productId,
                         `delete${item.productId}`,
-                        item.quantity
+                        item.quantity,
                       )
                     }
                   >
