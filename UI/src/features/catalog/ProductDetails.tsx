@@ -10,7 +10,7 @@ import {
 } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
-import { Product } from '../../app/layout/models/products'
+import { Product } from '../../app/models/products'
 import agent from '../../app/api/agent'
 import LoadingComponent from '../../app/layout/LoadingComponent'
 

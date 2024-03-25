@@ -10,7 +10,7 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
 const midLinks = [
   { title: 'catalog', path: '/catalog' },
@@ -68,6 +68,8 @@ export default function Header({ darkMode, onSwitch }: Props) {
 
           <Box display="flex" flexGrow="1" flexBasis="0" justifyContent="end">
             <IconButton
+              component={Link}
+              to="/basket"
               size="large"
               edge="start"
               color="inherit"

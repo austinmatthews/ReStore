@@ -8,7 +8,7 @@ import {
   CardMedia,
   Typography,
 } from '@mui/material'
-import { Product } from '../../app/layout/models/products'
+import { Product } from '../../app/models/products'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import agent from '../../app/api/agent'
