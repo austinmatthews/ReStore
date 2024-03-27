@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 import { Product } from '../../app/models/products'
 import agent from '../../app/api/agent'
@@ -19,7 +19,7 @@ import { useStoreContext } from '../../app/context/StoreContext'
 import { LoadingButton } from '@mui/lab'
 
 export default function ProductDetails() {
-  const { basket } = useStoreContext()
+  const { basket, setBasket, removeItem } = useStoreContext()
   const { id } = useParams<{ id: string }>()
   const [product, setProduct] = useState<Product | null>(null)
   const [loading, setLoading] = useState(true)
@@ -37,6 +37,30 @@ export default function ProductDetails() {
         .catch((error) => console.log(error))
         .finally(() => setLoading(false))
   }, [id, item])
+
+  function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
+    if (parseInt(event.currentTarget.value) >= 0)
+      setQuantity(parseInt(event.currentTarget.value))
+  }
+
+  function handleUpdateCart() {
+    if (!product) return
+
+    setSubmitting(true)
+    if (!item || quantity > item.quantity) {
+      const updatedQuantity = item ? quantity - item.quantity : quantity
+      agent.Basket.addItem(product.id, updatedQuantity)
+        .then((basket) => setBasket(basket))
+        .catch((error) => console.log(error))
+        .finally(() => setSubmitting(false))
+    } else {
+      const updatedQuantity = item.quantity - quantity
+      agent.Basket.deleteBasketItem(product.id, updatedQuantity)
+        .then(() => removeItem(product.id, updatedQuantity))
+        .catch((error) => console.log(error))
+        .finally(() => setSubmitting(false))
+    }
+  }
 
   if (loading) {
     return <LoadingComponent message="Loading Product..." />
@@ -86,6 +110,7 @@ export default function ProductDetails() {
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <TextField
+              onChange={handleInputChange}
               variant="outlined"
               type="number"
               label="Quantity In Cart"
@@ -100,6 +125,11 @@ export default function ProductDetails() {
               size="large"
               variant="contained"
               fullWidth
+              onClick={handleUpdateCart}
+              loading={submitting}
+              disabled={
+                item?.quantity === quantity || (!item && quantity === 0)
+              }
             >
               {item ? 'Update quantity' : 'Add to Cart'}
             </LoadingButton>
