@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Grid,
   Paper,
   Table,
@@ -17,6 +18,7 @@ import agent from '../../app/api/agent'
 import { LoadingButton } from '@mui/lab'
 import BasketSummary from './BasketSummary'
 import { currencyFormat } from '../../app/util/util'
+import { Link } from 'react-router-dom'
 
 export default function BasketPage() {
   const { basket, setBasket, removeItem } = useStoreContext()
@@ -36,7 +38,7 @@ export default function BasketPage() {
   function handleRemoveItem(
     productId: number,
     name: string,
-    quantity: number = 1,
+    quantity: number = 1
   ) {
     setStatus({ loading: true, name: name })
     agent.Basket.deleteBasketItem(productId, quantity)
@@ -89,7 +91,7 @@ export default function BasketPage() {
                     onClick={() =>
                       handleRemoveItem(
                         item.productId,
-                        `subtract${item.productId}`,
+                        `subtract${item.productId}`
                       )
                     }
                   >
@@ -121,7 +123,7 @@ export default function BasketPage() {
                       handleRemoveItem(
                         item.productId,
                         `delete${item.productId}`,
-                        item.quantity,
+                        item.quantity
                       )
                     }
                   >
@@ -137,6 +139,15 @@ export default function BasketPage() {
         <Grid item xs={6} />
         <Grid item xs={6}>
           <BasketSummary />
+          <Button
+            component={Link}
+            to="/checkout"
+            variant="contained"
+            size="large"
+            fullWidth
+          >
+            Checkout
+          </Button>
         </Grid>
       </Grid>
     </>
