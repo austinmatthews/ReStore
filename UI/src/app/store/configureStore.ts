@@ -6,7 +6,7 @@ import { basketSlice } from '../../features/basket/basketSlice'
 export const store = configureStore({
   reducer: {
     counter: counterSlice.reducer,
-    basket: basketSlice.reducer
+    basket: basketSlice.reducer,
   },
 })
 

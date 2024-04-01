@@ -8,6 +8,6 @@ const initialState: CounterState = {
   title: 'YARK (yet another redux counter)',
 }
 
-export default function CounterReducer(state = initialState, action: any) {
+export default function CounterReducer(state = initialState) {
   return state
 }
