@@ -35,7 +35,7 @@ export default function ProductDetails() {
         addBasketItemAsync({
           productId: product.id,
           quantity: updatedQuantity,
-        }),
+        })
       )
     } else {
       const updatedQuantity = item.quantity - quantity
@@ -43,7 +43,7 @@ export default function ProductDetails() {
         removeBasketItemAsync({
           productId: product.id,
           quantity: updatedQuantity,
-        }),
+        })
       )
     }
   }
@@ -101,7 +101,7 @@ export default function ProductDetails() {
               variant="contained"
               fullWidth
               onClick={handleUpdateCart}
-              loading={status === 'pendingRemoveItem' + item?.productId}
+              loading={status.includes('pending')}
               disabled={item?.quantity === quantity || (!item && quantity === 0)}
             >
               {item ? 'Update quantity' : 'Add to Cart'}
