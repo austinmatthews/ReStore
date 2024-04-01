@@ -1,13 +1,4 @@
-import {
-  Avatar,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  CardMedia,
-  Typography,
-} from '@mui/material'
+import { Avatar, Button, Card, CardActions, CardContent, CardHeader, CardMedia, Typography } from '@mui/material'
 import { Product } from '../../app/models/products'
 import { Link } from 'react-router-dom'
 import { LoadingButton } from '@mui/lab'
@@ -28,22 +19,13 @@ export default function ProductCard({ product }: Props) {
     <>
       <Card>
         <CardHeader
-          avatar={
-            <Avatar sx={{ bgcolor: 'secondary.main' }}>
-              {product.name.charAt(0).toUpperCase()}
-            </Avatar>
-          }
+          avatar={<Avatar sx={{ bgcolor: 'secondary.main' }}>{product.name.charAt(0).toUpperCase()}</Avatar>}
           title={product.name}
           titleTypographyProps={{
             sx: { fontWeight: 'bold', color: 'primary.main' },
           }}
         />
-        <CardMedia
-          sx={{ maxWidth: '100%', maxHeight: '100%', bgcolor: 'primary.light' }}
-          image={product.pictureUrl}
-          title={product.name}
-          component="img"
-        />
+        <CardMedia sx={{ maxWidth: '100%', maxHeight: '100%', bgcolor: 'primary.light' }} image={product.pictureUrl} title={product.name} component="img" />
         <CardContent>
           <Typography color="secondary" gutterBottom variant="h6">
             {currencyFormat(product.price)}
@@ -55,9 +37,7 @@ export default function ProductCard({ product }: Props) {
         <CardActions>
           <LoadingButton
             loading={status.includes('pendingAddItem' + product.id)}
-            onClick={() =>
-              dispatch(addBasketItemAsync({ productId: product.id }))
-            }
+            onClick={() => dispatch(addBasketItemAsync({ productId: product.id }))}
             size="small"
           >
             Add To Cart

@@ -11,9 +11,7 @@ export default function ServerError() {
             {state.error.title}
           </Typography>
           <Divider />
-          <Typography variant="body1">
-            {state.error.detail || 'Internal Server Error'}
-          </Typography>
+          <Typography variant="body1">{state.error.detail || 'Internal Server Error'}</Typography>
         </>
       ) : (
         <Typography variant="h5" gutterBottom>

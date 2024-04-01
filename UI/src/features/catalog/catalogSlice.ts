@@ -1,35 +1,25 @@
-import {
-  createAsyncThunk,
-  createEntityAdapter,
-  createSlice,
-} from '@reduxjs/toolkit'
+import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit'
 import { Product } from '../../app/models/products'
 import agent from '../../app/api/agent'
 import { RootState } from '../../app/store/configureStore'
 
 const productsAdapter = createEntityAdapter<Product>()
 
-export const fetchProductsAsync = createAsyncThunk<Product[]>(
-  'catalog/fetchProductsAsync',
-  async () => {
-    try {
-      return await agent.Catalog.list()
-    } catch (error) {
-      console.log(error)
-    }
+export const fetchProductsAsync = createAsyncThunk<Product[]>('catalog/fetchProductsAsync', async () => {
+  try {
+    return await agent.Catalog.list()
+  } catch (error) {
+    console.log(error)
   }
-)
+})
 
-export const fetchProductAsync = createAsyncThunk<Product, number>(
-  'catalog/fetchProductAsync',
-  async (productId) => {
-    try {
-      return await agent.Catalog.details(productId)
-    } catch (error) {
-      console.log(error)
-    }
+export const fetchProductAsync = createAsyncThunk<Product, number>('catalog/fetchProductAsync', async (productId) => {
+  try {
+    return await agent.Catalog.details(productId)
+  } catch (error) {
+    console.log(error)
   }
-)
+})
 
 export const catalogSlice = createSlice({
   name: 'catalog',

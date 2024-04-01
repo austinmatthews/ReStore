@@ -10,25 +10,13 @@ export default function ContactPage() {
       <Typography variant="h2">{title}</Typography>
       <Typography variant="h5">Data is: {data}</Typography>
       <ButtonGroup>
-        <Button
-          onClick={() => dispatch(decrement(1))}
-          variant="contained"
-          color="error"
-        >
+        <Button onClick={() => dispatch(decrement(1))} variant="contained" color="error">
           Decrement
         </Button>{' '}
-        <Button
-          onClick={() => dispatch(increment(1))}
-          variant="contained"
-          color="primary"
-        >
+        <Button onClick={() => dispatch(increment(1))} variant="contained" color="primary">
           Increment
         </Button>
-        <Button
-          onClick={() => dispatch(increment(5))}
-          variant="contained"
-          color="secondary"
-        >
+        <Button onClick={() => dispatch(increment(5))} variant="contained" color="secondary">
           Increment by 5
         </Button>
       </ButtonGroup>

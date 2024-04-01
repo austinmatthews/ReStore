@@ -1,15 +1,5 @@
 import { ShoppingCart } from '@mui/icons-material'
-import {
-  AppBar,
-  Badge,
-  Box,
-  IconButton,
-  List,
-  ListItem,
-  Switch,
-  Toolbar,
-  Typography,
-} from '@mui/material'
+import { AppBar, Badge, Box, IconButton, List, ListItem, Switch, Toolbar, Typography } from '@mui/material'
 import { Link, NavLink } from 'react-router-dom'
 import { useAppSelector } from '../store/configureStore'
 
@@ -74,26 +64,14 @@ export default function Header({ darkMode, onSwitch }: Props) {
           </List>
 
           <Box display="flex" flexGrow="1" flexBasis="0" justifyContent="end">
-            <IconButton
-              component={Link}
-              to="/basket"
-              size="large"
-              edge="start"
-              color="inherit"
-              sx={{ mr: 2 }}
-            >
+            <IconButton component={Link} to="/basket" size="large" edge="start" color="inherit" sx={{ mr: 2 }}>
               <Badge badgeContent={itemCount} color="secondary">
                 <ShoppingCart />
               </Badge>
             </IconButton>
             <List sx={{ display: 'flex' }}>
               {rightLinks.map(({ title, path }) => (
-                <ListItem
-                  component={NavLink}
-                  to={path}
-                  key={path}
-                  sx={navStyles}
-                >
+                <ListItem component={NavLink} to={path} key={path} sx={navStyles}>
                   {title.toUpperCase()}
                 </ListItem>
               ))}

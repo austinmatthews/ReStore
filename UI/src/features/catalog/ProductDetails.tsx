@@ -1,33 +1,18 @@
-import {
-  Divider,
-  Grid,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
-  TextField,
-  Typography,
-} from '@mui/material'
+import { Divider, Grid, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from '@mui/material'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 import LoadingComponent from '../../app/layout/LoadingComponent'
 import { currencyFormat } from '../../app/util/util'
 import { LoadingButton } from '@mui/lab'
 import { useAppDispatch, useAppSelector } from '../../app/store/configureStore'
-import {
-  addBasketItemAsync,
-  removeBasketItemAsync,
-} from '../basket/basketSlice'
+import { addBasketItemAsync, removeBasketItemAsync } from '../basket/basketSlice'
 import { fetchProductAsync, productSelectors } from './catalogSlice'
 
 export default function ProductDetails() {
   const { basket, status } = useAppSelector((state) => state.basket)
   const dispatch = useAppDispatch()
   const { id } = useParams<{ id: string }>()
-  const product = useAppSelector((state) =>
-    productSelectors.selectById(state, Number(id))
-  )
+  const product = useAppSelector((state) => productSelectors.selectById(state, Number(id)))
   const { status: productStatus } = useAppSelector((state) => state.catalog)
   const [quantity, setQuantity] = useState(0)
   const item = basket?.items.find((i) => i.productId === product?.id)
@@ -38,8 +23,7 @@ export default function ProductDetails() {
   }, [id, item, dispatch, product])
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
-    if (parseInt(event.currentTarget.value) >= 0)
-      setQuantity(parseInt(event.currentTarget.value))
+    if (parseInt(event.currentTarget.value) >= 0) setQuantity(parseInt(event.currentTarget.value))
   }
 
   function handleUpdateCart() {
@@ -51,7 +35,7 @@ export default function ProductDetails() {
         addBasketItemAsync({
           productId: product.id,
           quantity: updatedQuantity,
-        })
+        }),
       )
     } else {
       const updatedQuantity = item.quantity - quantity
@@ -59,7 +43,7 @@ export default function ProductDetails() {
         removeBasketItemAsync({
           productId: product.id,
           quantity: updatedQuantity,
-        })
+        }),
       )
     }
   }
@@ -75,11 +59,7 @@ export default function ProductDetails() {
   return (
     <Grid container spacing={6}>
       <Grid item xs={6}>
-        <img
-          src={product.pictureUrl}
-          alt={product.name}
-          style={{ width: '100%' }}
-        />
+        <img src={product.pictureUrl} alt={product.name} style={{ width: '100%' }} />
       </Grid>
       <Grid item xs={6}>
         <Typography variant="h3">{product.name}</Typography>
@@ -111,14 +91,7 @@ export default function ProductDetails() {
         </TableContainer>
         <Grid container spacing={2}>
           <Grid item xs={6}>
-            <TextField
-              onChange={handleInputChange}
-              variant="outlined"
-              type="number"
-              label="Quantity In Cart"
-              fullWidth
-              value={quantity}
-            />
+            <TextField onChange={handleInputChange} variant="outlined" type="number" label="Quantity In Cart" fullWidth value={quantity} />
           </Grid>
           <Grid item xs={6}>
             <LoadingButton
@@ -129,9 +102,7 @@ export default function ProductDetails() {
               fullWidth
               onClick={handleUpdateCart}
               loading={status === 'pendingRemoveItem' + item?.productId}
-              disabled={
-                item?.quantity === quantity || (!item && quantity === 0)
-              }
+              disabled={item?.quantity === quantity || (!item && quantity === 0)}
             >
               {item ? 'Update quantity' : 'Add to Cart'}
             </LoadingButton>

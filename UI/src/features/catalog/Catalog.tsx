@@ -15,8 +15,7 @@ export default function Catalog() {
     }
   }, [productsLoaded, dispatch])
 
-  if (status.includes('pending'))
-    return <LoadingComponent message="Loading Products..." />
+  if (status.includes('pending')) return <LoadingComponent message="Loading Products..." />
 
   return (
     <>
