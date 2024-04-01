@@ -1,27 +1,22 @@
-import agent from '../../app/api/agent'
 import LoadingComponent from '../../app/layout/LoadingComponent'
-import { Product } from '../../app/models/products'
+import { useAppDispatch, useAppSelector } from '../../app/store/configureStore'
 import ProductList from './ProductList'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import { fetchProductsAsync, productSelectors } from './catalogSlice'
 
 export default function Catalog() {
-  const [products, setProducts] = useState<Product[]>([])
-  const [loading, setLoading] = useState(true)
+  const products = useAppSelector(productSelectors.selectAll)
+  const { productsLoaded } = useAppSelector((state) => state.catalog)
+  const dispatch = useAppDispatch()
 
-  useEffect(
-    () => {
-      agent.Catalog.list()
-        .then((products) => setProducts(products))
-        .catch((error) => console.log(error))
-        .finally(() => setLoading(false))
-    },
-    // This second parameter below (The empty array) is an array on dependencies
-    // An Empty array will make it only run once
-    //If you don't add this, it will rerender infinitely
-    [],
-  )
+  useEffect(() => {
+    if (!productsLoaded) {
+      dispatch(fetchProductsAsync())
+    }
+  }, [productsLoaded, dispatch])
 
-  if (loading) return <LoadingComponent message="Loading Products..." />
+  if (status.includes('pending'))
+    return <LoadingComponent message="Loading Products..." />
 
   return (
     <>

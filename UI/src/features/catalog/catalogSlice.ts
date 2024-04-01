@@ -5,6 +5,7 @@ import {
 } from '@reduxjs/toolkit'
 import { Product } from '../../app/models/products'
 import agent from '../../app/api/agent'
+import { RootState } from '../../app/store/configureStore'
 
 const productsAdapter = createEntityAdapter<Product>()
 
@@ -13,6 +14,17 @@ export const fetchProductsAsync = createAsyncThunk<Product[]>(
   async () => {
     try {
       return await agent.Catalog.list()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+)
+
+export const fetchProductAsync = createAsyncThunk<Product, number>(
+  'catalog/fetchProductAsync',
+  async (productId) => {
+    try {
+      return await agent.Catalog.details(productId)
     } catch (error) {
       console.log(error)
     }
@@ -38,5 +50,17 @@ export const catalogSlice = createSlice({
     builder.addCase(fetchProductsAsync.rejected, (state) => {
       state.status = 'idle'
     })
+    builder.addCase(fetchProductAsync.pending, (state) => {
+      state.status = 'pendingFetchProduct'
+    })
+    builder.addCase(fetchProductAsync.fulfilled, (state, action) => {
+      productsAdapter.upsertOne(state, action.payload)
+      state.status = 'idle'
+    })
+    builder.addCase(fetchProductAsync.rejected, (state) => {
+      state.status = 'idle'
+    })
   },
 })
+
+export const productSelectors = productsAdapter.getSelectors((state: RootState) => state.catalog)

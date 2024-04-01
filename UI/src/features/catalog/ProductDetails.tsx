@@ -11,8 +11,6 @@ import {
 } from '@mui/material'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
-import { Product } from '../../app/models/products'
-import agent from '../../app/api/agent'
 import LoadingComponent from '../../app/layout/LoadingComponent'
 import { currencyFormat } from '../../app/util/util'
 import { LoadingButton } from '@mui/lab'
@@ -21,26 +19,23 @@ import {
   addBasketItemAsync,
   removeBasketItemAsync,
 } from '../basket/basketSlice'
+import { fetchProductAsync, productSelectors } from './catalogSlice'
 
 export default function ProductDetails() {
   const { basket, status } = useAppSelector((state) => state.basket)
   const dispatch = useAppDispatch()
   const { id } = useParams<{ id: string }>()
-  const [product, setProduct] = useState<Product | null>(null)
-  const [loading, setLoading] = useState(true)
+  const product = useAppSelector((state) =>
+    productSelectors.selectById(state, Number(id))
+  )
+  const { status: productStatus } = useAppSelector((state) => state.catalog)
   const [quantity, setQuantity] = useState(0)
   const item = basket?.items.find((i) => i.productId === product?.id)
 
   useEffect(() => {
-    if (item) {
-      setQuantity(item.quantity)
-    }
-    id &&
-      agent.Catalog.details(parseInt(id))
-        .then((response) => setProduct(response))
-        .catch((error) => console.log(error))
-        .finally(() => setLoading(false))
-  }, [id, item])
+    if (item) setQuantity(item.quantity)
+    if (!product && id) dispatch(fetchProductAsync(Number(id)))
+  }, [id, item, dispatch, product])
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     if (parseInt(event.currentTarget.value) >= 0)
@@ -56,7 +51,7 @@ export default function ProductDetails() {
         addBasketItemAsync({
           productId: product.id,
           quantity: updatedQuantity,
-        }),
+        })
       )
     } else {
       const updatedQuantity = item.quantity - quantity
@@ -64,12 +59,12 @@ export default function ProductDetails() {
         removeBasketItemAsync({
           productId: product.id,
           quantity: updatedQuantity,
-        }),
+        })
       )
     }
   }
 
-  if (loading) {
+  if (productStatus.includes('pending')) {
     return <LoadingComponent message="Loading Product..." />
   }
 
