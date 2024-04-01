@@ -12,14 +12,17 @@ import 'react-toastify/dist/ReactToastify.css'
 import { getCookie } from '../util/util'
 import agent from '../api/agent'
 import LoadingComponent from './LoadingComponent'
-import { useAppDispatch } from '../store/configureStore'
+import { useAppDispatch, useAppSelector } from '../store/configureStore'
 import { setBasket } from '../../features/basket/basketSlice'
+import { setTheme } from '../../features/theme/themeSlice'
 
 function App() {
   const dispatch = useAppDispatch()
   const [loading, setLoading] = useState(true)
-
   useEffect(() => {
+    dispatch(
+      setTheme(localStorage.getItem('darkMode') === 'true' ? true : false)
+    )
     const buyerId = getCookie('buyerId')
     if (buyerId)
       agent.Basket.getBasket()
@@ -28,7 +31,7 @@ function App() {
         .finally(() => setLoading(false))
   }, [dispatch])
 
-  const [darkMode, setDarkMode] = useState(false)
+  const { darkMode } = useAppSelector((state) => state.theme)
   const palette = darkMode ? 'dark' : 'light'
   const theme = createTheme({
     palette: {
@@ -40,7 +43,9 @@ function App() {
   })
 
   function onSwitch() {
-    setDarkMode(!darkMode)
+    dispatch(setTheme(!darkMode))
+    const setDarkMode = !darkMode
+    localStorage.setItem('darkMode', setDarkMode.toString())
   }
 
   if (loading) return <LoadingComponent message="Loading App" />
