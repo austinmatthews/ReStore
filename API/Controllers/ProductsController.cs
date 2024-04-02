@@ -19,7 +19,9 @@ namespace API.Controllers
 		[HttpGet]
 		//DB calls should be async
 		//Task is used when we are returning async
-		public async Task<ActionResult<List<Product>>> GetProducts(ProductParams productParams)
+		public async Task<ActionResult<List<Product>>> GetProducts(
+			[FromQuery] ProductParams productParams
+		)
 		{
 			var query = _context
 				.Products.Sort(productParams.OrderBy)
@@ -33,9 +35,9 @@ namespace API.Controllers
 				productParams.PageSize
 			);
 
-      Response.Headers.Append("Pagination", JsonSerializer.Serialize(products.MetaData));
+			Response.AddPaginationHeader(products.MetaData);
 
-      return products;
+			return products;
 		}
 
 		[HttpGet("{id}")]
