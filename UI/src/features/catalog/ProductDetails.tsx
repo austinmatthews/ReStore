@@ -35,7 +35,7 @@ export default function ProductDetails() {
         addBasketItemAsync({
           productId: product.id,
           quantity: updatedQuantity,
-        })
+        }),
       )
     } else {
       const updatedQuantity = item.quantity - quantity
@@ -43,7 +43,7 @@ export default function ProductDetails() {
         removeBasketItemAsync({
           productId: product.id,
           quantity: updatedQuantity,
-        })
+        }),
       )
     }
   }

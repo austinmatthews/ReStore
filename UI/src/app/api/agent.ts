@@ -3,7 +3,7 @@ import { toast } from 'react-toastify'
 import { router } from '../router/routes'
 import { PaginatedResponse } from '../models/pagination'
 
-const sleep = () => new Promise((resolve) => setTimeout(resolve, 100))
+const sleep = () => new Promise((resolve) => setTimeout(resolve, 1000))
 
 axios.defaults.baseURL = 'http://localhost:5000/api/'
 axios.defaults.withCredentials = true
@@ -43,7 +43,7 @@ axios.interceptors.response.use(
         break
     }
     return Promise.reject(error.response)
-  }
+  },
 )
 
 const requests = {

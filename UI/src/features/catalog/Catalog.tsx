@@ -1,4 +1,3 @@
-import LoadingComponent from '../../app/layout/LoadingComponent'
 import { useAppDispatch, useAppSelector } from '../../app/store/configureStore'
 import ProductList from './ProductList'
 import { useEffect } from 'react'
@@ -27,8 +26,6 @@ export default function Catalog() {
   useEffect(() => {
     if (!filtersLoaded) dispatch(fetchFiltersAsync())
   }, [dispatch, filtersLoaded])
-
-  if (status.includes('pending') || !metaData) return <LoadingComponent message="Loading Products..." />
 
   return (
     <Grid container spacing={4}>
@@ -60,7 +57,7 @@ export default function Catalog() {
       </Grid>
       <Grid item xs={9}>
         <ProductList products={products} />
-        <AppPagination metaData={metaData} onPageChange={(page: number) => dispatch(setPageNumber({ pageNumber: page }))}></AppPagination>
+        {metaData && <AppPagination metaData={metaData} onPageChange={(page: number) => dispatch(setPageNumber({ pageNumber: page }))}></AppPagination>}
       </Grid>
     </Grid>
   )

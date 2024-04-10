@@ -20,7 +20,7 @@ export const addBasketItemAsync = createAsyncThunk<Basket, { productId: number; 
     } catch (error: any) {
       return thunkAPI.rejectWithValue({ error: error.data })
     }
-  }
+  },
 )
 
 export const removeBasketItemAsync = createAsyncThunk<void, { productId: number; quantity: number; name?: string }>(
@@ -31,7 +31,7 @@ export const removeBasketItemAsync = createAsyncThunk<void, { productId: number;
     } catch (error: any) {
       return thunkAPI.rejectWithValue({ error: error.data })
     }
-  }
+  },
 )
 
 export const basketSlice = createSlice({
