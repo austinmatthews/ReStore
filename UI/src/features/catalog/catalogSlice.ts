@@ -18,13 +18,12 @@ const productsAdapter = createEntityAdapter<Product>()
 
 function getAxiosParams(productParams: ProductParams) {
   const params = new URLSearchParams()
-
   params.append('pageNumber', productParams.pageNumber.toString())
   params.append('pageSize', productParams.pageSize.toString())
   params.append('orderBy', productParams.orderBy)
   if (productParams.searchTerm) params.append('searchTerm', productParams.searchTerm)
-  if (productParams.brands) params.append('brands', productParams.brands.toString())
-  if (productParams.types) params.append('types', productParams.types.toString())
+  if (productParams.brands.length > 0) params.append('brands', productParams.brands.toString())
+  if (productParams.types.length > 0) params.append('types', productParams.types.toString())
 
   return params
 }
@@ -60,6 +59,8 @@ function initParams() {
     pageNumber: 1,
     pageSize: 6,
     orderBy: 'name',
+    brands: [],
+    types: [],
   }
 }
 
@@ -76,6 +77,10 @@ export const catalogSlice = createSlice({
   }),
   reducers: {
     setProductParams: (state, action) => {
+      state.productsLoaded = false
+      state.productParams = { ...state.productParams, ...action.payload, pageNumber: 1 }
+    },
+    setPageNumber: (state, action) => {
       state.productsLoaded = false
       state.productParams = { ...state.productParams, ...action.payload }
     },
@@ -128,4 +133,4 @@ export const catalogSlice = createSlice({
 
 export const productSelectors = productsAdapter.getSelectors((state: RootState) => state.catalog)
 
-export const { setProductParams, resetProductParams, setMetaData } = catalogSlice.actions
+export const { setProductParams, resetProductParams, setMetaData, setPageNumber } = catalogSlice.actions
