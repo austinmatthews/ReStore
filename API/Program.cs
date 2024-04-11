@@ -1,5 +1,7 @@
 using API.Data;
+using API.Entities;
 using API.Middleware;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +19,13 @@ builder.Services.AddDbContext<StoreContext>(opt =>
 });
 
 builder.Services.AddCors();
+builder
+	.Services.AddIdentityCore<User>()
+	.AddRoles<IdentityRole>()
+	.AddEntityFrameworkStores<StoreContext>();
+
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 app.UseMiddleware<ExceptionMiddleware>();
@@ -42,15 +51,16 @@ var scope = app.Services.CreateScope();
 
 //Grabs db context and logger from the scope
 var context = scope.ServiceProvider.GetRequiredService<StoreContext>();
+var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
 var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
 
 //Try catch because it might fail
 try
 {
 	//Applies pending migrations and creates db if it does not exist yet
-	context.Database.Migrate();
+	await context.Database.MigrateAsync();
 	//Static call to Initialize to pass in context and add data to db
-	DbInitializer.Initialize(context);
+	await DbInitializer.InitializeAsync(context, userManager);
 }
 catch (Exception ex)
 {
