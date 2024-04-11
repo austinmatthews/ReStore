@@ -3,7 +3,6 @@ using System.Security.Claims;
 using System.Text;
 using API.Entities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Localization;
 using Microsoft.IdentityModel.Tokens;
 
 namespace API.Services
