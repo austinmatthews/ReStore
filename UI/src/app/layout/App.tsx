@@ -10,12 +10,14 @@ import LoadingComponent from './LoadingComponent'
 import { useAppDispatch, useAppSelector } from '../store/configureStore'
 import { setBasket } from '../../features/basket/basketSlice'
 import { setTheme } from '../../features/theme/themeSlice'
+import { fetchCurrentUser } from '../../features/account/accountSlice'
 
 function App() {
   const dispatch = useAppDispatch()
   const [loading, setLoading] = useState(true)
   useEffect(() => {
     dispatch(setTheme(localStorage.getItem('darkMode') === 'true' ? true : false))
+    dispatch(fetchCurrentUser())
     const buyerId = getCookie('buyerId')
     if (buyerId)
       agent.Basket.getBasket()
