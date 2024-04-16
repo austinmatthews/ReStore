@@ -7,6 +7,7 @@ import ProductSearch from './ProductSearch'
 import RadioButtonGroup from '../../app/components/RadioButtonGroup'
 import CheckboxButtons from '../../app/components/CheckboxButtons'
 import AppPagination from '../../app/components/AppPagination'
+import LoadingComponent from '../../app/layout/LoadingComponent'
 
 const sortOptions = [
   { value: 'name', label: 'Alphabetical' },
@@ -26,6 +27,8 @@ export default function Catalog() {
   useEffect(() => {
     if (!filtersLoaded) dispatch(fetchFiltersAsync())
   }, [dispatch, filtersLoaded])
+
+  if (!filtersLoaded) return <LoadingComponent message="Loading products..." />
 
   return (
     <Grid container spacing={4}>

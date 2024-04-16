@@ -45,16 +45,18 @@ function App() {
     localStorage.setItem('darkMode', setDarkMode.toString())
   }
 
-  if (loading) return <LoadingComponent message="Loading App" />
-
   return (
     <ThemeProvider theme={theme}>
       <ToastContainer position="bottom-right" hideProgressBar theme="colored" />
       <CssBaseline />
-      <Header onSwitch={onSwitch} darkMode={darkMode} />
-      <Container>
-        <Outlet />
-      </Container>
+      <Header onSwitch={onSwitch} darkMode={darkMode} />{' '}
+      {loading ? (
+        <LoadingComponent message="Initialising App..." />
+      ) : (
+        <Container>
+          <Outlet />
+        </Container>
+      )}
     </ThemeProvider>
   )
 }

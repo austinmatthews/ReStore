@@ -55,7 +55,6 @@ export default function Login() {
           fullWidth
           label="Password"
           type="password"
-          autoFocus
           {...register('password', { required: 'Password is required' })}
           error={!!errors.password}
           helperText={errors?.password?.message as string}
