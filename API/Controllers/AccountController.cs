@@ -1,17 +1,24 @@
+using API.Data;
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
 using API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-	public class AccountController(UserManager<User> userManager, TokenService tokenService)
-		: BaseApiController
+	public class AccountController(
+		UserManager<User> userManager,
+		TokenService tokenService,
+		StoreContext context
+	) : BaseApiController
 	{
 		private readonly UserManager<User> _userManager = userManager;
 		private readonly TokenService _tokenService = tokenService;
+		private readonly StoreContext _context = context;
 
 		[HttpPost("login")]
 		public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
@@ -20,7 +27,23 @@ namespace API.Controllers
 			if (user == null || !await _userManager.CheckPasswordAsync(user, loginDto.Password))
 				return Unauthorized();
 
-			return new UserDto { Email = user.Email, Token = await _tokenService.GenerateToken(user) };
+			var userBasket = await RetrieveBasket(loginDto.Username);
+			var anonBasket = await RetrieveBasket(Request.Cookies["buyerId"]);
+
+			if (anonBasket != null)
+			{
+				if (userBasket != null)
+					_context.Baskets.Remove(userBasket);
+				anonBasket.BuyerId = user.UserName;
+				Response.Cookies.Delete("buyerId");
+				await _context.SaveChangesAsync();
+			}
+			return new UserDto
+			{
+				Email = user.Email,
+				Token = await _tokenService.GenerateToken(user),
+				Basket = anonBasket != null ? anonBasket.MapBasketToDto() : userBasket.MapBasketToDto()
+			};
 		}
 
 		[HttpPost("register")]
@@ -50,10 +73,20 @@ namespace API.Controllers
 		{
 			var user = await _userManager.FindByNameAsync(User.Identity.Name);
 
-      return new UserDto{
-        Email = user.Email,
-        Token = await _tokenService.GenerateToken(user) 
-      };
+			return new UserDto { Email = user.Email, Token = await _tokenService.GenerateToken(user) };
+		}
+
+		private async Task<Basket> RetrieveBasket(string buyerId)
+		{
+			if (string.IsNullOrEmpty(buyerId))
+			{
+				Response.Cookies.Delete("buyerId");
+				return null;
+			}
+			return await _context
+				.Baskets.Include(b => b.Items)
+				.ThenInclude(bi => bi.Product)
+				.FirstOrDefaultAsync(x => x.BuyerId == Request.Cookies["buyerId"]);
 		}
 	}
 }
