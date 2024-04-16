@@ -10,6 +10,7 @@ import BasketPage from '../../features/basket/BasketPage'
 import CheckoutPage from '../../features/checkout/CheckoutPage'
 import LoginPage from '../../features/account/LoginPage'
 import AboutPage from '../../features/about/AboutPage'
+import Register from '../../features/account/Register'
 
 export const router = createBrowserRouter([
   {
@@ -22,6 +23,7 @@ export const router = createBrowserRouter([
       { path: 'basket', element: <BasketPage /> },
       { path: 'checkout', element: <CheckoutPage /> },
       { path: 'login', element: <LoginPage /> },
+      { path: 'register', element: <Register /> },
       { path: 'about', element: <AboutPage /> },
       { path: 'contact', element: <ContactPage /> },
       { path: 'server-error', element: <ServerError /> },
