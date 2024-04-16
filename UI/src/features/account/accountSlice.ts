@@ -4,6 +4,7 @@ import agent from '../../app/api/agent'
 import { FieldValues } from 'react-hook-form'
 import { router } from '../../app/router/routes'
 import { toast } from 'react-toastify'
+import { setBasket } from '../basket/basketSlice'
 
 interface AccountState {
   user: User | null
@@ -15,7 +16,11 @@ const initialState: AccountState = {
 
 export const loginUser = createAsyncThunk<User, FieldValues>('account/loginUser', async (data, thunkAPI) => {
   try {
-    const user = await agent.Account.login(data)
+    const userDto = await agent.Account.login(data)
+    const { basket, ...user } = userDto
+
+    if (basket) thunkAPI.dispatch(setBasket(basket))
+
     localStorage.setItem('user', JSON.stringify(user))
     return user
   } catch (error: any) {
@@ -28,7 +33,10 @@ export const fetchCurrentUser = createAsyncThunk<User>(
   async (_, thunkAPI) => {
     thunkAPI.dispatch(setUser(JSON.parse(localStorage.getItem('user')!)))
     try {
-      const user = await agent.Account.currentUser()
+      const userDto = await agent.Account.currentUser()
+      const { basket, ...user } = userDto
+
+      if (basket) thunkAPI.dispatch(setBasket(basket))
       localStorage.setItem('user', JSON.stringify(user))
       return user
     } catch (error: any) {
@@ -66,7 +74,7 @@ export const accountSlice = createSlice({
       state.user = action.payload
     })
     builder.addMatcher(isAnyOf(loginUser.rejected), (_state, action) => {
-      console.log(action.payload)
+      throw action.payload
     })
   },
 })

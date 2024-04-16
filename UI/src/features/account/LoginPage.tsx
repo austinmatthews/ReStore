@@ -25,8 +25,12 @@ export default function Login() {
   })
 
   const submitForm = async (data: FieldValues) => {
-    await dispatch(loginUser(data))
-    navigate('/catalog')
+    try {
+      await dispatch(loginUser(data))
+      navigate('/catalog')
+    } catch (error: any) {
+      console.log(error)
+    }
   }
 
   return (
