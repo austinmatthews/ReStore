@@ -34,6 +34,7 @@ namespace API.Controllers
 			{
 				if (userBasket != null)
 					_context.Baskets.Remove(userBasket);
+
 				anonBasket.BuyerId = user.UserName;
 				Response.Cookies.Delete("buyerId");
 				await _context.SaveChangesAsync();
