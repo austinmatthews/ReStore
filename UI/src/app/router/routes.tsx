@@ -11,12 +11,14 @@ import CheckoutPage from '../../features/checkout/CheckoutPage'
 import LoginPage from '../../features/account/LoginPage'
 import AboutPage from '../../features/about/AboutPage'
 import Register from '../../features/account/Register'
+import RequireAuth from './RequireAuth'
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
     children: [
+      { element: <RequireAuth />, children: [{ path: 'checkout', element: <CheckoutPage /> }] },
       { path: '', element: <HomePage /> },
       { path: 'catalog', element: <Catalog /> },
       { path: 'catalog/:id', element: <ProductDetails /> },
