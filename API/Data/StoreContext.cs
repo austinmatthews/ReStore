@@ -1,8 +1,8 @@
 using API.Entities;
+using API.Entities.OrderAggregate;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace API.Data
 {
@@ -12,6 +12,7 @@ namespace API.Data
 		//Each DBSet represents a table in the DB
 		public DbSet<Product> Products { get; set; }
 		public DbSet<Basket> Baskets { get; set; }
+		public DbSet<Order> Orders { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
