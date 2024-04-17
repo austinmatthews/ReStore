@@ -433,7 +433,7 @@ namespace API.Data.Migrations
             modelBuilder.Entity("API.Entities.OrderAggregate.OrderItem", b =>
                 {
                     b.HasOne("API.Entities.OrderAggregate.Order", null)
-                        .WithMany("OrderItmes")
+                        .WithMany("OrderItems")
                         .HasForeignKey("OrderId");
 
                     b.OwnsOne("API.Entities.OrderAggregate.ProductItemOrdered", "ItemOrdered", b1 =>
@@ -528,7 +528,7 @@ namespace API.Data.Migrations
 
             modelBuilder.Entity("API.Entities.OrderAggregate.Order", b =>
                 {
-                    b.Navigation("OrderItmes");
+                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("API.Entities.User", b =>
